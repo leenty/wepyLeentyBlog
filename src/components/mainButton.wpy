@@ -1,0 +1,54 @@
+<style lang="stylus">
+  @import '../layout/variable'
+  .mainButton
+    position fixed
+    left 20rpx
+    bottom 130rpx
+    background-color mainColor
+    color #fff
+    width 80rpx
+    height @width
+    border-radius 50%
+    line-height @width
+    box-shadow 0 1px 3px 0 rgba(0,0,0,.2)
+  .mainButton__icon
+    display inline-block
+    width 0
+    height 0
+    &:before
+      content ' '
+      display inline-block
+      width 50rpx
+      height 4rpx
+      background-color #fff
+</style>
+
+<template lang="pug">
+view.mainButton.u-tac
+  text.mainButton__icon(bindtap="toggleMenu")
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import {dispatch, getState, subscribe} from '../status'
+  export default class MainButton extends wepy.component {
+    data = {
+      status: getState()
+    }
+
+    methods = {
+      toggleMenu () {
+        dispatch({
+          type: 'TOGGLE_SLIDER_BAR',
+          text: 'Read the docs'
+        })
+      }
+    }
+
+    onLoad () {
+      subscribe(() => {
+        this.status = getState()
+      })
+    }
+  }
+</script>

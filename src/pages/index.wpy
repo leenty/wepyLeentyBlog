@@ -1,0 +1,87 @@
+<style lang="stylus">
+  @import '../layout/variable'
+  .home
+    min-height 100vh
+  .home__content
+    background-color #fff
+    transition transform .5s
+    min-height 100vh
+  .home__content--trf
+    transform-origin center left
+    transform translate(50%) scale(.9)
+    box-shadow 0 0 100px 5px rgba(0,0,0,.3)
+  .home__avatar
+    width 200rpx
+    height @width
+    border-radius 50%
+    background-size cover
+</style>
+
+<template lang="pug">
+view.home
+  view.home__content(class="{{status.sliderBar ? 'home__content--trf' : ''}}")
+    view.home__item
+      text test Data {{status.sliderBar}}
+    view.home__item
+      image.home__avatar(src="{{userInfo.avatarUrl}}")
+    view.home__item
+      text {{userInfo.nickName}}
+    view.home__item
+      text {{normalTitle}}
+    view.home__item
+      text {{setTimeoutTitle}}
+    mainbutton
+    menu(:items.sync="items", :test="test")
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Menu from '../components/menu'
+  import MainButton from '../components/mainButton'
+  import store from '../status'
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: 'demo'
+    }
+    data = {
+      userInfo: {
+        nickName: '用户名加载中...'
+      },
+      normalTitle: '原始标题',
+      setTimeoutTitle: '标题三秒后会被修改',
+      status: store.getState()
+    }
+
+    components = {
+      menu: Menu,
+      mainbutton: MainButton
+    }
+
+    onLoad () {
+      store.subscribe(() => {
+        this.status = store.getState()
+        console.log(this.status)
+        this.$apply()
+      })
+    }
+
+    async onReady() {
+      this.$parent.getUserInfo(userInfo => {
+        console.log(userInfo)
+        if (userInfo) {
+          this.userInfo = userInfo
+        }
+
+        this.$apply()
+      })
+
+      this.normalTitle = '标题已被修改'
+
+      this.setTimeoutTitle = '标题三秒后会被修改'
+      setTimeout(() => {
+        this.setTimeoutTitle = '到三秒了'
+        this.$apply()
+      }, 3000)
+    }
+  }
+</script>
