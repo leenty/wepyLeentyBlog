@@ -30,15 +30,15 @@ view.mainButton.u-tac
 
 <script>
   import wepy from 'wepy'
-  import {dispatch, getState, subscribe} from '../status'
+  import store from '../status'
   export default class MainButton extends wepy.component {
     data = {
-      status: getState()
+      status: store.getState()
     }
 
     methods = {
       toggleMenu () {
-        dispatch({
+        store.dispatch({
           type: 'TOGGLE_SLIDER_BAR',
           text: 'Read the docs'
         })
@@ -46,8 +46,8 @@ view.mainButton.u-tac
     }
 
     onLoad () {
-      subscribe(() => {
-        this.status = getState()
+      store.subscribe(() => {
+        this.status = store.getState()
       })
     }
   }
