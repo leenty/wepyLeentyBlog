@@ -1,0 +1,1 @@
+export const TOGGLE_SLIDER_BAR = 'TOGGLE_SLIDER_BAR'

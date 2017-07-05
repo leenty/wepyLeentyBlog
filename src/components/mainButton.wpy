@@ -31,10 +31,11 @@ view.mainButton.u-tac
 <script>
   import wepy from 'wepy'
   import store from '../status'
+
   export default class MainButton extends wepy.component {
-    data = {
-      status: store.getState()
-    }
+    // data = {
+    //   status: store.getState()
+    // }
 
     methods = {
       toggleMenu () {

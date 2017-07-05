@@ -14,8 +14,6 @@ page
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
-import store from './status'
-console.log(store)
 
 export default class extends wepy.app {
   config = {
@@ -57,6 +55,7 @@ export default class extends wepy.app {
 
   async testAsync () {
     const data = await this.sleep(3)
+    console.log(data)
   }
 
   getUserInfo(cb) {

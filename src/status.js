@@ -19,6 +19,7 @@ let store = createStore((state, {type, text}) => {
     : mutations[type](text)
 }, state)
 
+console.log(store)
 console.log(store.getState())
 
 export default store
