@@ -1,0 +1,18 @@
+<style lang="stylus">
+</style>
+
+<template lang="pug">
+text {{text}}
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class Page3 extends wepy.page {
+    config = {
+      navigationBarTitleText: 'page3'
+    }
+    data = {
+      text: 'page3'
+    }
+  }
+</script>

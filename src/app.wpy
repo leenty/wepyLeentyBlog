@@ -7,19 +7,23 @@
   align-items center
   justify-content space-between
   box-sizing border-box
-page
-  background-color mainColor
+// page
+//   background-color mainColor
 </style>
 
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
+// import store from './store'
+import {list, person, OrderLine} from './stores'
+console.log(list, person, OrderLine)
 
 export default class extends wepy.app {
   config = {
     pages: [
       'pages/index',
-      'pages/demo'
+      'pages/demo',
+      'pages/page3'
     ],
     window: {
       backgroundTextStyle: 'light',

@@ -11,6 +11,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "mobx": "^3.1.16",
     "redux": "^3.7.1",
     "wepy": "^1.5.7",
     "wepy-async-function": "^1.4.4",

@@ -1,13 +1,14 @@
 import * as types from '../types'
 
 let state = {
-  sliderBar: false
+  sliderBar: false,
+  test: 'test'
 }
 
 let getters = {}
 
 const mutations = {
-  [TOGGLE_SLIDER_BAR] () {
+  [types.TOGGLE_SLIDER_BAR] (state) {
     state.sliderBar = !state.sliderBar
     return state
   }

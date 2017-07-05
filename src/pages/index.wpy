@@ -2,6 +2,7 @@
   @import '../layout/variable'
   .home
     min-height 100vh
+    background-color mainColor
   .home__content
     background-color #fff
     transition transform .5s
@@ -19,7 +20,7 @@
 
 <template lang="pug">
 view.home
-  view.home__content(class="{{slider ? 'home__content--trf' : ''}}")
+  view.home__content(class="{{status.sliderBar ? 'home__content--trf' : ''}}")
     view.home__item
       text test Data {{status.sliderBar}}
     view.home__item
@@ -30,6 +31,8 @@ view.home
       text {{normalTitle}}
     view.home__item
       text {{setTimeoutTitle}}
+    view
+      navigator(url="./page3") page3
     mainbutton
     menu(:items.sync="items", :test="test")
 </template>
@@ -49,8 +52,7 @@ view.home
       },
       normalTitle: '原始标题',
       setTimeoutTitle: '标题三秒后会被修改',
-      status: store.getState(),
-      slider: false
+      status: store.getState()
     }
 
     components = {
@@ -59,21 +61,17 @@ view.home
     }
 
     onLoad () {
-      console.log(this.data)
       store.subscribe(() => {
         this.status = store.getState()
-        console.log(this.status)
         this.$apply()
       })
     }
 
     async onReady() {
       this.$parent.getUserInfo(userInfo => {
-        console.log(userInfo)
         if (userInfo) {
           this.userInfo = userInfo
         }
-
         this.$apply()
       })
 
