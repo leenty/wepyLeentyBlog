@@ -8,6 +8,7 @@
   justify-content space-between
   box-sizing border-box
 // page
+//   overflow hidden
 //   background-color mainColor
 </style>
 
@@ -15,8 +16,9 @@
 import wepy from 'wepy'
 import 'wepy-async-function'
 // import store from './store'
-import {list, person, OrderLine} from './stores'
-console.log(list, person, OrderLine)
+// import {list, person, orderLine} from './stores'
+// console.log(list, person, orderLine)
+// orderLine.price = 2
 
 export default class extends wepy.app {
   config = {

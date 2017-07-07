@@ -20,9 +20,9 @@
 
 <template lang="pug">
 view.home
-  view.home__content(class="{{status.sliderBar ? 'home__content--trf' : ''}}")
+  view.home__content(class="{{sliderBar ? 'home__content--trf' : ''}}")
     view.home__item
-      text test Data {{status.sliderBar}}
+      text test Data {{sliderBar}} {{globalData.statuss}}
     view.home__item
       image.home__avatar(src="{{userInfo.avatarUrl}}")
     view.home__item
@@ -33,7 +33,7 @@ view.home
       text {{setTimeoutTitle}}
     view
       navigator(url="./page3") page3
-    mainbutton
+    mainbutton(:sliderBar.sync="sliderBar")
     menu(:items.sync="items", :test="test")
 </template>
 
@@ -42,6 +42,8 @@ view.home
   import Menu from '../components/menu'
   import MainButton from '../components/mainButton'
   import store from '../status'
+  import {status} from '../stores'
+  import globalStatus from '../mixins/globalStatus'
   export default class Index extends wepy.page {
     config = {
       navigationBarTitleText: 'demo'
@@ -52,12 +54,24 @@ view.home
       },
       normalTitle: '原始标题',
       setTimeoutTitle: '标题三秒后会被修改',
-      status: store.getState()
+      // status: store.getState()
+      status: status,
+      sliderBar: false
     }
+
+    mixins = [globalStatus]
 
     components = {
       menu: Menu,
       mainbutton: MainButton
+    }
+
+    events = {
+      toggleSliderBar() {
+        this.globalData.statuss = !this.globalData.statuss
+        this.sliderBar = !this.sliderBar
+        this.op ++
+      }
     }
 
     onLoad () {

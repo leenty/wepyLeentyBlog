@@ -23,7 +23,7 @@ class stores {
     //   actions = {},
     //   mutations = {}
     for (module in modules) {
-      // state = 
+      // state = x
       this[module] = modules[module]
       // this[module] = storeCreater(modules[module])
     }

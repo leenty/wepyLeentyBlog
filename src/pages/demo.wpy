@@ -85,6 +85,7 @@
   import Group from '../components/group'
   import Toast from 'wepy-com-toast'
   import testMixin from '../mixins/test'
+  import globalStatus from '../mixins/globalStatus'
 
   export default class Demo extends wepy.page {
     config = {
@@ -99,7 +100,7 @@
       toast: Toast
     }
 
-    mixins = [testMixin]
+    mixins = [testMixin, globalStatus]
 
     data = {
       mynum: 20,
