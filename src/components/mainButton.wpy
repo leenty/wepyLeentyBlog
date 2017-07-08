@@ -41,6 +41,7 @@ view.mainButton(bindtap="toggleMenu")
 
 <script>
   import wepy from 'wepy'
+  import globalStatus from '../mixins/globalStatus'
   // import store from '../status'
   // import {status, subscribe} from '../stores'
 
@@ -48,6 +49,8 @@ view.mainButton(bindtap="toggleMenu")
     // data = {
     //   status: store.getState()
     // }
+
+    mixins = [globalStatus]
 
     methods = {
       toggleMenu () {

@@ -5,23 +5,29 @@ export default class globalStatus extends wepy.mixin {
     globalData: null
   }
 
+  watch = {
+    globalData (n, o) {
+      console.log(n, o)
+    }
+  }
+
   onHide () {
     console.log('mixin onHide')
-    this.$parent.globalData = this.globalData
+    this.$root.$parent.globalData = this.globalData
   }
 
   onShow () {
     console.log('mixin onShow')
-    this.globalData = this.$parent.globalData
+    this.globalData = this.$root.$parent.globalData
   }
 
   onUnload () {
     console.log('mixin onUnload')
-    this.$parent.globalData = this.globalData
+    this.$root.$parent.globalData = this.globalData
   }
 
   onLoad () {
     console.log('mixin onLoad')
-    this.globalData = this.$parent.globalData
+    this.globalData = this.$root.$parent.globalData
   }
 }
