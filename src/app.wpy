@@ -38,7 +38,7 @@ export default class extends wepy.app {
   globalData = {
     userInfo: null,
     globalTest: 123,
-    statuss: false
+    sliderBar: false
   }
 
   // status = status
@@ -69,6 +69,7 @@ export default class extends wepy.app {
     if (this.globalData.userInfo) {
       return this.globalData.userInfo
     }
+    wepy.login()
     wepy.getUserInfo({
       success (res) {
         that.globalData.userInfo = res.userInfo

@@ -26,3 +26,12 @@ data: {
   $component$demoData: 'this is a component demo data'
 }
 ```
+
+### 小程序只对data的根节点进行观察
+小程序修改数据需要直接修改根节点，不然不能触发数据更新
+```
+this.st.status = !this.st.status // 不触发数据更新
+this.st = {
+  status: !this.st.status
+} // 触发数据更新
+```

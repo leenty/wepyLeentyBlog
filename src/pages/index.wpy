@@ -20,20 +20,20 @@
 
 <template lang="pug">
 view.home
-  view.home__content(class="{{sliderBar ? 'home__content--trf' : ''}}")
+  view.home__content(class="{{status ? 'home__content--trf' : ''}}")
     view.home__item
-      text test Data {{sliderBar}} {{globalData.statuss}}
+      text test Data {{status}} {{globalData.sliderBar}}
     view.home__item
       image.home__avatar(src="{{userInfo.avatarUrl}}")
-    view.home__item
+    view(bindtap="toggle").home__item
       text {{userInfo.nickName}}
     view.home__item
       text {{normalTitle}}
     view.home__item
-      text {{setTimeoutTitle}}
+      text(bindtap="toggle") {{setTimeoutTitle}}
     view
       navigator(url="./page3") page3
-    mainbutton(:sliderBar.sync="sliderBar")
+    mainbutton
     menu(:items.sync="items", :test="test")
 </template>
 
@@ -41,8 +41,6 @@ view.home
   import wepy from 'wepy'
   import Menu from '../components/menu'
   import MainButton from '../components/mainButton'
-  import store from '../status'
-  import {status} from '../stores'
   import globalStatus from '../mixins/globalStatus'
   export default class Index extends wepy.page {
     config = {
@@ -54,9 +52,7 @@ view.home
       },
       normalTitle: '原始标题',
       setTimeoutTitle: '标题三秒后会被修改',
-      // status: store.getState()
-      status: status,
-      sliderBar: false
+      status: false
     }
 
     mixins = [globalStatus]
@@ -66,22 +62,29 @@ view.home
       mainbutton: MainButton
     }
 
-    events = {
-      toggleSliderBar() {
-        this.globalData.statuss = !this.globalData.statuss
-        this.sliderBar = !this.sliderBar
-        this.op ++
+    methods = {
+      toggle() {
+        this.status = !this.status
+        // let globalData = this.globalData
+        // globalData.sliderBar = !this.globalData.sliderBar
+        // this.globalData = globalData
+        // this.globalData.sliderBar = !this.globalData.sliderBar
+        // console.log(this.globalData)
       }
     }
 
-    onLoad () {
-      store.subscribe(() => {
-        this.status = store.getState()
-        this.$apply()
-      })
+    events = {
+      toggleSliderBar() {
+        // this.globalData.sliderBar = !this.globalData.sliderBar
+        let globalData = wepy.$copy(this.globalData)
+        globalData.sliderBar = !this.globalData.sliderBar
+        this.globalData = globalData
+        console.log(this.globalData)
+      }
     }
 
     async onReady() {
+      console.log(this.globalData)
       this.$parent.getUserInfo(userInfo => {
         if (userInfo) {
           this.userInfo = userInfo

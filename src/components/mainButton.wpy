@@ -41,41 +41,12 @@ view.mainButton(bindtap="toggleMenu")
 
 <script>
   import wepy from 'wepy'
-  import globalStatus from '../mixins/globalStatus'
-  // import store from '../status'
-  // import {status, subscribe} from '../stores'
 
   export default class MainButton extends wepy.component {
-    // data = {
-    //   status: store.getState()
-    // }
-
-    mixins = [globalStatus]
-
     methods = {
       toggleMenu () {
         this.$emit('toggleSliderBar')
-        // status.toggle()
-        // status.sliderBar = !status.sliderBar
-        // console.log(status.sliderBar)
-        // store.dispatch({
-        //   type: 'TOGGLE_SLIDER_BAR',
-        //   text: 'Read the docs'
-        // })
       }
     }
-
-    onLoad () {
-      // console.log(this.$root.$parent)
-    }
-
-    // onLoad () {
-    //   subscribe(status => {
-    //     console.log(status)
-    //   })
-    //   store.subscribe(() => {
-    //     this.status = store.getState()
-    //   })
-    // }
   }
 </script>
