@@ -1,4 +1,5 @@
 import wepy from 'wepy'
+// import globalStatusMethods from './globalStatusMethods.js'
 
 const getGlobalData = function (source, self) {
   console.log(`getGlobalData by ${self.$name}:${source}`)
@@ -25,6 +26,22 @@ export default class globalStatus extends wepy.mixin {
     }
   }
 
+  $updateGlobal (fn) {
+    fn()
+    // let globalData = {}
+    this.globalData = JSON.parse(JSON.stringify(this.globalData))
+    this.$apply()
+  }
+
+  // methods = {
+  //   updateGlobal(fn) {
+  //     fn()
+  //     this.globalData = JSON.parse(JSON.stringify(this.globalData))
+  //   }
+  // }
+
+  // mixins = [globalStatusMethods]
+
   events = {
     $updateDlobalStatus(source, e) {
       console.log(`mixin ${this.$name} update from ${e.source.$name}:$${e.type}`)
@@ -45,6 +62,12 @@ export default class globalStatus extends wepy.mixin {
   }
 
   onLoad () {
+    var a = {}
+    console.log(a == a)
+    console.log(a == {})
+    console.log(a == wepy.$copy(a, true))
+    console.log(a == JSON.parse(JSON.stringify(a)))
+    console.log(this)
     getGlobalData('onShow', this)
   }
 }

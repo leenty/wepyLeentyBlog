@@ -85,7 +85,6 @@
   import Group from '../components/group'
   import Toast from 'wepy-com-toast'
   import testMixin from '../mixins/test'
-  import globalStatus from '../mixins/globalStatus'
 
   export default class Demo extends wepy.page {
     config = {
@@ -100,7 +99,7 @@
       toast: Toast
     }
 
-    mixins = [testMixin, globalStatus]
+    mixins = [testMixin]
 
     data = {
       mynum: 20,
@@ -213,6 +212,10 @@
         let $event = args[args.length - 1]
         console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
       }
+    }
+
+    onShow() {
+      this.methods.tap()
     }
 
     onLoad() {

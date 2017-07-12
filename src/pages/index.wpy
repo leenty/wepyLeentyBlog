@@ -3,6 +3,8 @@
   .home
     min-height 100vh
     background-color mainColor
+    width 750rpx
+    overflow-x hidden
   .home__content
     background-color #fff
     transition transform .5s
@@ -22,7 +24,7 @@
 view.home
   view.home__content(class="{{status ? 'home__content--trf' : ''}}")
     view.home__item
-      text test Data {{status}} {{globalData.sliderBar}}
+      text test Data {{status}} {{globalData.sliderBar}} {{test.status}}
     view.home__item
       image.home__avatar(src="{{userInfo.avatarUrl}}")
     view(bindtap="toggle").home__item
@@ -42,49 +44,67 @@ view.home
   import Menu from '../components/menu'
   import MainButton from '../components/mainButton'
   import globalStatus from '../mixins/globalStatus'
+  import testMixin from '../mixins/test'
   export default class Index extends wepy.page {
     config = {
       navigationBarTitleText: 'demo'
     }
-    data = {
-      userInfo: {
-        nickName: '用户名加载中...'
-      },
-      normalTitle: '原始标题',
-      setTimeoutTitle: '标题三秒后会被修改',
-      status: false
-    }
-
-    mixins = [globalStatus]
 
     components = {
       menu: Menu,
       mainbutton: MainButton
     }
 
+    mixins = [globalStatus]
+
+    data = {
+      userInfo: {
+        nickName: '用户名加载中...'
+      },
+      normalTitle: '原始标题',
+      setTimeoutTitle: '标题三秒后会被修改',
+      status: false,
+      test: {
+        status: false
+      }
+    }
+
     methods = {
       toggle() {
-        this.status = !this.status
+        this.test.status = 123
+        this.$apply()
+        // this.status = !this.status
         // let globalData = this.globalData
         // globalData.sliderBar = !this.globalData.sliderBar
         // this.globalData = globalData
         // this.globalData.sliderBar = !this.globalData.sliderBar
         // console.log(this.globalData)
       }
+      // updateGlobal() {
+      //   console.log('index page updateGlobal')
+      // }
     }
 
     events = {
       toggleSliderBar() {
-        // this.globalData.sliderBar = !this.globalData.sliderBar
-        let globalData = wepy.$copy(this.globalData)
-        globalData.sliderBar = !this.globalData.sliderBar
-        this.globalData = globalData
+        // this.test = {
+        //   status: !this.test.status
+        // }
+        this.test.status = !this.test.status
+        // this.global = Object.create(Object.prototype, this.global)
+        // this.global = JSON.parse(JSON.stringify(this.global))
+        this.globalData.sliderBar = !this.globalData.sliderBar
+        // this.globalData = JSON.parse(JSON.stringify(this.globalData))
+        this.$apply()
+        // this.$updateGlobal(() => {
+        //   this.globalData.sliderBar = !this.globalData.sliderBar
+        // })
+
         console.log(this.globalData)
       }
     }
 
     async onReady() {
-      console.log(this.globalData)
       this.$parent.getUserInfo(userInfo => {
         if (userInfo) {
           this.userInfo = userInfo

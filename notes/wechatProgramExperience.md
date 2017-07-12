@@ -27,7 +27,8 @@ data: {
 }
 ```
 
-### 小程序只对data的根节点进行观察
+### 人工智障小程序
+1.小程序只对data的根节点进行观察
 小程序修改数据需要直接修改根节点，不然不能触发数据更新
 ```
 this.st.status = !this.st.status // 不触发数据更新
@@ -35,3 +36,13 @@ this.st = {
   status: !this.st.status
 } // 触发数据更新
 ```
+2.小程序内对象深克隆之后还是等于原对象
+```
+var a = {}                            // 模拟器  |  真机调试
+console.log(a == a)                   // true   |  true
+console.log(a == {})                  // false  |  false
+console.log(a == wepy.$copy(a, true)) // false  |  true
+```
+
+### wepy
+1.mixins 里面的methods方法不能通过混合的方式进入组件或页面的methods里，需要在组件或者页面里显式的声明同名方法才能得到调用。
