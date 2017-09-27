@@ -10,17 +10,23 @@ module.exports = {
       jsOutput: path.join('web', 'index.js')
     }
   },
+  resolve: {
+    alias: {
+      counter: path.join(__dirname, 'src/components/counter')
+    },
+    modules: ['node_modules']
+  },
   eslint: true,
   compilers: {
-    /*less: {
-      compress: true
-    },*/
-    stylus: {
-      compress: true
-    },
+    // less: {
+    //   compress: true
+    // },
     /*sass: {
       outputStyle: 'compressed'
     },*/
+    stylus: {
+      "compress": true
+    },
     pug: {},
     babel: {
       sourceMap: true,
@@ -46,7 +52,11 @@ if (prod) {
   // module.exports.compilers['sass'] = {outputStyle: 'compressed'}
 
   // 压缩less
-  module.exports.compilers['less'] = {compress: true}
+  // module.exports.compilers['less'] = {compress: true}
+
+
+  module.exports.compilers['stylus'] = {compress: true}
+  module.exports.compilers['pug'] = {compress: true}
 
   // 压缩js
   module.exports.plugins = {

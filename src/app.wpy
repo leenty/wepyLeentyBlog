@@ -1,5 +1,4 @@
 <style lang="stylus">
-@import './layout/index'
 .container
   height 100%
   display flex
@@ -7,25 +6,16 @@
   align-items center
   justify-content space-between
   box-sizing border-box
-// page
-//   overflow hidden
-//   background-color mainColor
 </style>
 
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
-// import store from './store'
-// import {list, person, orderLine} from './stores'
-// console.log(list, person, orderLine)
-// orderLine.price = 2
 
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/index',
-      'pages/demo',
-      'pages/page3'
+      'pages/index'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -36,12 +26,9 @@ export default class extends wepy.app {
   }
 
   globalData = {
-    userInfo: null,
-    globalTest: 123,
-    sliderBar: false
+    userInfo: null
   }
 
-  // status = status
   constructor () {
     super()
     this.use('requestfix')
@@ -69,7 +56,6 @@ export default class extends wepy.app {
     if (this.globalData.userInfo) {
       return this.globalData.userInfo
     }
-    wepy.login()
     wepy.getUserInfo({
       success (res) {
         that.globalData.userInfo = res.userInfo

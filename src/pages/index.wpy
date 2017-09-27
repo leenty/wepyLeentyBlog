@@ -1,124 +1,209 @@
 <style lang="stylus">
-  @import '../layout/variable'
-  .home
-    min-height 100vh
-    background-color mainColor
-    width 750rpx
-    overflow-x hidden
-  .home__content
-    background-color #fff
-    transition transform .5s
-    min-height 100vh
-  .home__content--trf
-    transform-origin center left
-    transform translate(50%) scale(.9)
-    box-shadow 0 0 100px 5px rgba(0,0,0,.3)
-  .home__avatar
-    width 200rpx
-    height @width
+  .userinfo
+    display flex
+    flex-direction column
+    align-items center
+  .userinfo-avatar
+    width 80rpx
+    height 80rpx
     border-radius 50%
-    background-size cover
+  .userinfo-nickname
+    color #aaa
 </style>
-
 <template lang="pug">
-view.home
-  view.home__content(class="{{globalData.sliderBar ? 'home__content--trf' : ''}}")
-    view.home__item
-      text test Data {{status}} {{globalData.sliderBar}} {{test.status}}
-    view.home__item
-      image.home__avatar(src="{{userInfo.avatarUrl}}")
-    view(bindtap="toggle").home__item
-      text {{userInfo.nickName}}
-    view.home__item
-      text {{normalTitle}}
-    view.home__item
-      text(bindtap="toggle") {{setTimeoutTitle}}
-    view
-      navigator(url="./page3") page3
-    mainbutton
-    menu(:items.sync="items", :test="test")
+  view.container
+    view.userinfo(@tap="handleViewTap")
+      image.userinfo-avatar(src="{{ userInfo.avatarUrl }}", background-size="cover")
+      view.userinfo-nickname {{ userInfo.nickName }}
+    panel
+      view.title(slot="title") 测试数据绑定
+      text.info {{normalTitle}}
+      text.info {{setTimeoutTitle}}
+      text.info {{mixin}}
+      text.info {{mynum}}
+      text.info {{now}}
+      button(@tap="plus('a')", size="mini")  + 
+    panel
+      view.title(slot="title") 其它测试
+      button(@tap="toast", size="mini") 第三方组件
+      button(@tap="communicate", size="mini") 组件通信
+      button(@tap="tap", size="mini") 混合TAP事件
+    panel
+      view(class="title", slot="title") 测试并发网络请求
+      view 返回结果: 
+        text {{netrst}}
+      button(@tap="request", size="mini")  点我发起10个请求 
+    panel
+      view(class="title", slot="title") 测试组件
+      text(class="testcounter") 计数组件1: 
+      view.counterview
+        counter1(@index-emit.user="counterEmit")
+      text.testcounter 计数组件2: 
+      view.counterview
+        counter2(:num.sync="mynum")
+    panel
+      view.title(slot="title") 测试组件Repeat
+      repeat(for="{{groupList}}", index="index", item="item", key="key")
+        group(:grouplist="item", :indexa="index")
+    panel
+      view.title(slot="title") 测试列表
+      list
+    toast
 </template>
 
 <script>
   import wepy from 'wepy'
-  import Menu from '../components/menu'
-  import MainButton from '../components/mainButton'
-  import globalStatus from '../mixins/globalStatus'
+  import List from '../components/list'
+  import Panel from '../components/panel'
+  import Counter from 'counter' // alias example
+  import Group from '../components/group'
+  import Toast from 'wepy-com-toast'
   import testMixin from '../mixins/test'
+
   export default class Index extends wepy.page {
     config = {
-      navigationBarTitleText: 'demo'
+      navigationBarTitleText: 'test'
     }
-
     components = {
-      menu: Menu,
-      mainbutton: MainButton
+      panel: Panel,
+      counter1: Counter,
+      counter2: Counter,
+      list: List,
+      group: Group,
+      toast: Toast
     }
 
-    mixins = [globalStatus]
+    mixins = [testMixin]
 
     data = {
+      mynum: 20,
       userInfo: {
-        nickName: '用户名加载中...'
+        nickName: '加载中...'
       },
       normalTitle: '原始标题',
       setTimeoutTitle: '标题三秒后会被修改',
-      status: false,
-      test: {
-        status: false
+      count: 0,
+      netrst: '',
+      groupList: [
+        {
+          id: 1,
+          name: '点击改变',
+          list: [
+            {
+              childid: '1.1',
+              childname: '子项，点我改变'
+            }, {
+              childid: '1.2',
+              childname: '子项，点我改变'
+            }, {
+              childid: '1.3',
+              childname: '子项，点我改变'
+            }
+          ]
+        },
+        {
+          id: 2,
+          name: '点击改变',
+          list: [
+            {
+              childid: '2.1',
+              childname: '子项，点我改变'
+            }, {
+              childid: '2.2',
+              childname: '子项，点我改变'
+            }, {
+              childid: '2.3',
+              childname: '子项，点我改变'
+            }
+          ]
+        },
+        {
+          id: 3,
+          name: '点击改变',
+          list: [
+            {
+              childid: '3.1',
+              childname: '子项，点我改变'
+            }
+          ]
+        }
+      ]
+    }
+
+    computed = {
+      now () {
+        return +new Date()
       }
     }
 
     methods = {
-      toggle() {
-        this.test.status = 123
-        this.$apply()
-        // this.status = !this.status
-        // let globalData = this.globalData
-        // globalData.sliderBar = !this.globalData.sliderBar
-        // this.globalData = globalData
-        // this.globalData.sliderBar = !this.globalData.sliderBar
-        // console.log(this.globalData)
+      plus () {
+        this.mynum++
+      },
+      toast () {
+        let promise = this.$invoke('toast', 'show', {
+          title: '自定义标题',
+          img: 'https://raw.githubusercontent.com/kiinlam/wetoast/master/images/star.png'
+        })
+
+        promise.then((d) => {
+          console.log('toast done')
+        })
+      },
+      tap () {
+        console.log('do noting from ' + this.$name)
+      },
+      communicate () {
+        console.log(this.$name + ' tap')
+
+        this.$invoke('counter2', 'minus', 45, 6)
+        this.$invoke('counter1', 'plus', 45, 6)
+
+        this.$broadcast('index-broadcast', 1, 3, 4)
+      },
+      request () {
+        let self = this
+        let i = 10
+        let map = ['MA==', 'MQo=', 'Mg==', 'Mw==', 'NA==', 'NQ==', 'Ng==', 'Nw==', 'OA==', 'OQ==']
+        while (i--) {
+          wepy.request({
+            url: 'https://www.madcoder.cn/tests/sleep.php?time=1&t=css&c=' + map[i] + '&i=' + i,
+            success: function (d) {
+              self.netrst += d.data + '.'
+              self.$apply()
+            }
+          })
+        }
+      },
+      counterEmit (...args) {
+        let $event = args[args.length - 1]
+        console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
       }
-      // updateGlobal() {
-      //   console.log('index page updateGlobal')
-      // }
     }
 
     events = {
-      toggleSliderBar() {
-        // this.test = {
-        //   status: !this.test.status
-        // }
-        this.test.status = !this.test.status
-        // this.global = Object.create(Object.prototype, this.global)
-        // this.global = JSON.parse(JSON.stringify(this.global))
-        this.globalData.sliderBar = !this.globalData.sliderBar
-        // this.globalData = JSON.parse(JSON.stringify(this.globalData))
-        this.$apply()
-        // this.$updateGlobal(() => {
-        //   this.globalData.sliderBar = !this.globalData.sliderBar
-        // })
-
-        console.log(this.globalData)
+      'index-emit': (...args) => {
+        let $event = args[args.length - 1]
+        console.log(`${this.$name} receive ${$event.name} from ${$event.source.$name}`)
       }
     }
 
-    async onReady() {
-      this.$parent.getUserInfo(userInfo => {
+    onLoad() {
+      let self = this
+      this.$parent.getUserInfo(function (userInfo) {
         if (userInfo) {
-          this.userInfo = userInfo
+          self.userInfo = userInfo
         }
-        this.$apply()
+        self.normalTitle = '标题已被修改'
+
+        self.setTimeoutTitle = '标题三秒后会被修改'
+        setTimeout(() => {
+          self.setTimeoutTitle = '到三秒了'
+          self.$apply()
+        }, 3000)
+
+        self.$apply()
       })
-
-      this.normalTitle = '标题已被修改'
-
-      this.setTimeoutTitle = '标题三秒后会被修改'
-      setTimeout(() => {
-        this.setTimeoutTitle = '到三秒了'
-        this.$apply()
-      }, 3000)
     }
   }
 </script>
