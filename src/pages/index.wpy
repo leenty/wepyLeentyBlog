@@ -22,7 +22,7 @@
 
 <template lang="pug">
 view.home
-  view.home__content(class="{{status ? 'home__content--trf' : ''}}")
+  view.home__content(class="{{globalData.sliderBar ? 'home__content--trf' : ''}}")
     view.home__item
       text test Data {{status}} {{globalData.sliderBar}} {{test.status}}
     view.home__item
